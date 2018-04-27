@@ -1,0 +1,15 @@
+.link.details {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+ul.unstyle {
+    list-style-type: none;
+    width: 100%;
+    padding-left: 0;
+}
+
+li.char {
+    width: 50%;
+    float: left;
+}
