@@ -1,10 +1,13 @@
 import { getCars, addAuth } from '../actions/actions';
 import store from '../store/index';
 
-export const getInitCars = () => {
-    fetch('http://localhost:8000/api/')
+export const dashLink = 'http://localhost:8000/api/';
+export const listLink = 'http://localhost:8000/api/list/';
+
+export const getInitCars = (link) => {
+    fetch(link)
     .then(res => res.json())
-    .then(cars => store.dispatch(getCars(cars)));
+    .then(result => store.dispatch(getCars(result)));
 }
 
 export const getToken = (username, password) => {

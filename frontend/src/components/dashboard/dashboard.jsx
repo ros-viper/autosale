@@ -3,11 +3,9 @@ import { selectCar, setLoading } from '../../actions/actions';
 import { push } from 'react-router-redux';
 import { connect } from "react-redux";
 import store from '../../store/index';
-import ListCar from '../listCar/listCar';
 import * as utils from '../../utils/utils.js';
+import ListCar from '../listCar/listCar';
 import ReactLoading from 'react-loading';
-import './list.css';
-
 
 const mapStateToProps = state => {
     return {
@@ -21,7 +19,7 @@ const mapDispatchToProps = {
     setLoading
 }
 
-class ConnectedList extends Component {
+class ConnectedDashboard extends Component{
     constructor(props) {
         super(props)
 
@@ -30,7 +28,7 @@ class ConnectedList extends Component {
 
     componentWillMount() {
         this.props.setLoading();
-        utils.getInitCars(utils.listLink);
+        utils.getInitCars(utils.dashLink);
     }
 
     selectCar(event) {
@@ -44,14 +42,14 @@ class ConnectedList extends Component {
         if (this.props.loading) {
             return <ReactLoading className="busy wrapper" type="spinningBubbles" color="grey" height={64} />
         }
-        return (
+        return(
             this.props.cars.map(car => (
                 <ListCar key={car.id} car={car} selectCar={this.selectCar} />
             ))
         )
-    };
-};
+    }
+}
 
-const List = connect(mapStateToProps, mapDispatchToProps)(ConnectedList);
+const Dashboard = connect(mapStateToProps, mapDispatchToProps)(ConnectedDashboard);
 
-export default List;
+export default Dashboard;

@@ -34,6 +34,6 @@ class ConnectedCar extends Component {
     };
 };
 
-const Car = connect(mapStateToProps)(ConnectedCar);
+const DetailCar = connect(mapStateToProps)(ConnectedCar);
 
-export default Car;
+export default DetailCar;

@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework import permissions, authentication
 from .permissions import IsOwnerOrReadOnly
+from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 from django.views.generic.base import TemplateView
 
 
@@ -48,11 +50,47 @@ from django.views.generic.base import TemplateView
 #         car.delete()
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 
+class MyPagination(PageNumberPagination):
+
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'count': self.page.paginator.count,
+            'pages': self.page.paginator.num_pages,
+            'cars': data
+        })
+
+class DashboardSetPagination(MyPagination):
+    page_size = 2
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
+class ListSetPagination(MyPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class CarList(generics.ListCreateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    pagination_class = ListSetPagination
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class Dashboard(generics.ListCreateAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    pagination_class = DashboardSetPagination
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

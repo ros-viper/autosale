@@ -13,8 +13,3 @@ li.char {
     width: 50%;
     float: left;
 }
-
-div.busy.wrapper {
-    position: relative;
-    left: 50%;
-}

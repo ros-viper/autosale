@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Navbar, Nav, MenuItem, NavItem, NavDropdown } from 'react-bootstrap';
 import { addAuth, removeAuth } from '../../actions/actions';
 import { connect } from 'react-redux';
+import { push } from 'react-router-redux';
 import store from '../../store/index';
 
 const mapStateToProps = state => {
@@ -16,6 +17,7 @@ class ConnectedUserbar extends Component {
         super(props)
 
         this.logOut = this.logOut.bind(this);
+        this.redirect = this.redirect.bind(this);
     }
 
     componentDidMount() {
@@ -32,12 +34,20 @@ class ConnectedUserbar extends Component {
         localStorage.removeItem('username');
     }
 
+    redirect(event) {
+        event.preventDefault();
+        store.dispatch(push(event.target.getAttribute('location')));
+    }
+
     render() {
         return(
             <Navbar>
-                <Navbar.Brand>
-                    <a href="/">Autosale</a>
+                <Navbar.Brand style={{cursor: "pointer"}}>
+                    <a href="" location="/" onClick={this.redirect}>Autosale</a>                                                           
                 </Navbar.Brand>
+                <Nav>
+                    <NavItem location="/list" onClick={this.redirect}>List</NavItem>                    
+                </Nav>
                 <Nav style={{marginRight: 15}} pullRight>
                     {this.props.token ? <Logged logout={this.logOut} username={this.props.username} /> : <NotLogged />}
                 </Nav>

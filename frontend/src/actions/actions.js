@@ -1,4 +1,4 @@
-import { SELECT_CAR, GET_CARS, ADD_AUTH, REMOVE_AUTH } from './action-types';
+import { SELECT_CAR, GET_CARS, ADD_AUTH, REMOVE_AUTH, SET_LOADING } from './action-types';
 
 export const selectCar = car => ({
     type: SELECT_CAR,
@@ -18,6 +18,11 @@ export const addAuth = (token, username) => ({
 
 export const removeAuth = () => ({
     type: REMOVE_AUTH,
+    payload: null
+});
+
+export const setLoading = () => ({
+    type: SET_LOADING,
     payload: null
 });
 
