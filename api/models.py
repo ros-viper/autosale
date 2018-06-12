@@ -17,11 +17,10 @@ BODY_TYPES = [('Convertible', 'Convertible'), ('Coupe', 'Coupe'), ('Hatchback', 
 
 
 class Car(models.Model):
-
     created = models.DateTimeField(auto_now_add=True)
-    make = models.CharField(max_length=100, blank=False)
+    make = models.ForeignKey('Make', related_name='cars', on_delete=models.CASCADE)
     year = models.IntegerField(choices=YEARS, default=datetime.datetime.now().year)
-    model = models.CharField(max_length=200, blank=False, default='Other')
+    model = models.ForeignKey('Model', related_name='cars', on_delete=models.CASCADE)
     transmission = models.CharField(choices=TRANSMISSIONS, default='Manual', max_length=100)
     description = models.TextField()
     used = models.BooleanField(default=True)
@@ -38,12 +37,31 @@ class Car(models.Model):
     owner = models.ForeignKey('auth.User', related_name='cars', on_delete=models.CASCADE)
     location = models.CharField(max_length=100, blank=False, default='Other')
 
+    @property
+    def title(self):
+        return f'{self.make.name} {self.model.name}'
+
     class Meta:
         ordering = ('created',)
 
     def __str__(self):
         """A string representation of the model."""
         return f'{self.make} {self.model} - {self.year}'
+
+class Make(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+
+    def __unicode__(self):
+        """A string representation of the model."""
+        return self.name
+
+class Model(models.Model):
+    name = models.CharField(max_length=100, blank=False)
+    make = models.ForeignKey(Make, related_name='models', on_delete=models.CASCADE)
+
+    def __str__(self):
+        """A string representation of the model."""
+        return f'{self.name}'
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)

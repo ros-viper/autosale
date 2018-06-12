@@ -6,11 +6,16 @@ import store from '../../store/index';
 import * as utils from '../../utils/utils.js';
 import ListCar from '../listCar/listCar';
 import ReactLoading from 'react-loading';
+import ReactPaginate from 'react-paginate';
+import './dashboard.css';
+
 
 const mapStateToProps = state => {
     return {
         cars: state.rootReducer.cars,
-        loading: state.rootReducer.loading
+        loading: state.rootReducer.loading,
+        current_page: state.rootReducer.current_page,
+        pages_count: state.rootReducer.pages_count
     };
 };
 
@@ -24,6 +29,7 @@ class ConnectedDashboard extends Component{
         super(props)
 
         this.selectCar = this.selectCar.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     componentWillMount() {
@@ -38,14 +44,33 @@ class ConnectedDashboard extends Component{
         store.dispatch(push(`/car/${car_id}`));
     }
 
+    changePage(event) {        
+        utils.getInitCars("http://localhost:8000/api/?page=" + (event.selected+1));
+    }
+
     render() {
         if (this.props.loading) {
-            return <ReactLoading className="busy wrapper" type="spinningBubbles" color="grey" height={64} />
+            return <ReactLoading className="busy wrapper" type="bubbles" color="grey" height={64} />
         }
         return(
-            this.props.cars.map(car => (
-                <ListCar key={car.id} car={car} selectCar={this.selectCar} />
-            ))
+            <div className="main">
+                {this.props.cars.map(car => (
+                    <ListCar key={car.id} car={car} selectCar={this.selectCar} />
+                ))}
+                <ReactPaginate  previousLabel={"prev"}
+                                nextLabel={"next"}
+                                breakLabel={<a href="">...</a>}
+                                breakClassName={"break-me"}
+                                pageCount={this.props.pages_count}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={this.changePage}
+                                containerClassName={"pagination"}
+                                subContainerClassName={"pages pagination"}
+                                activeClassName={"active"}
+                                forcePage={this.props.current_page-1}
+                />
+            </div>
         )
     }
 }

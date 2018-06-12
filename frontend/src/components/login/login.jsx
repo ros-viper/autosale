@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { FormGroup, FormControl, ControlLabel, Button } from 'react-bootstrap';
-import { push, goBack } from 'react-router-redux';
+import { push } from 'react-router-redux';
 import store from '../../store/index';
 import * as utils from '../../utils/utils.js';
 import Popup from 'react-popup';
 import './popup.css';
+import './login.css';
 
 class ConnectedLogin extends Component {
     constructor(props) {
@@ -53,10 +54,9 @@ class ConnectedLogin extends Component {
 
     render() {
         return (
-            <form>
+            <form className="login">
                 <Popup />
                 <FormGroup controlId="username">
-                    <ControlLabel>Please enter username</ControlLabel>
                     <FormControl
                         type="text"
                         value={this.state.username}
@@ -65,7 +65,6 @@ class ConnectedLogin extends Component {
                     />                    
                 </FormGroup>
                 <FormGroup controlId="password">
-                    <ControlLabel>Please enter password</ControlLabel>
                     <FormControl
                         type="password"
                         value={this.state.password}
@@ -73,7 +72,7 @@ class ConnectedLogin extends Component {
                         onChange={this.changePassword}
                     />
                 </FormGroup>
-                <Button type="submit" onClick={this.submit}>Submit</Button>
+                <Button type="submit" onClick={this.submit}>Login</Button>
             </form>
         )
     };

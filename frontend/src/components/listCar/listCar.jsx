@@ -9,7 +9,7 @@ const ListCar = (props) => {
                 <img src={require('../../images/no-car.jpeg')} alt="" />
             </Col>
             <Col lg={4} md={4}>
-                <a className="link details" car_id={car.id} onClick={props.selectCar}>{car.make} {car.model} - {car.year}</a>
+                <a className="link details" car_id={car.id} onClick={props.selectCar}>{car.title} - {car.year}</a>
                 <h3 className="price">${car.price}</h3>
                 <ul className="unstyle characteristic">
                     <li className="char item"><img className="icon speed" src={require('../../images/icon-speedometer.png')} />&nbsp;{car.odometer} km</li>

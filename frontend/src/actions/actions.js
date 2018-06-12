@@ -1,4 +1,4 @@
-import { SELECT_CAR, GET_CARS, ADD_AUTH, REMOVE_AUTH, SET_LOADING } from './action-types';
+import { SELECT_CAR, GET_CARS, ADD_AUTH, REMOVE_AUTH, SET_LOADING, GET_CAR } from './action-types';
 
 export const selectCar = car => ({
     type: SELECT_CAR,

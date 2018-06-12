@@ -6,13 +6,16 @@ import store from '../../store/index';
 import ListCar from '../listCar/listCar';
 import * as utils from '../../utils/utils.js';
 import ReactLoading from 'react-loading';
+import ReactPaginate from 'react-paginate';
 import './list.css';
 
 
 const mapStateToProps = state => {
     return {
         cars: state.rootReducer.cars,
-        loading: state.rootReducer.loading
+        loading: state.rootReducer.loading,
+        current_page: state.rootReducer.current_page,
+        pages_count: state.rootReducer.pages_count
     };
 };
 
@@ -45,9 +48,24 @@ class ConnectedList extends Component {
             return <ReactLoading className="busy wrapper" type="spinningBubbles" color="grey" height={64} />
         }
         return (
-            this.props.cars.map(car => (
-                <ListCar key={car.id} car={car} selectCar={this.selectCar} />
-            ))
+            <div className="main">
+                {this.props.cars.map(car => (
+                    <ListCar key={car.id} car={car} selectCar={this.selectCar} />
+                ))}
+                <ReactPaginate  previousLabel={"prev"}
+                                nextLabel={"next"}
+                                breakLabel={<a href="">...</a>}
+                                breakClassName={"break-me"}
+                                pageCount={this.props.pages_count}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={this.changePage}
+                                containerClassName={"pagination"}
+                                subContainerClassName={"pages pagination"}
+                                activeClassName={"active"}
+                                forcePage={this.props.current_page-1}
+                />
+            </div>
         )
     };
 };

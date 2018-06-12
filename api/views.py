@@ -1,8 +1,8 @@
 # from rest_framework import status
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
-from .models import Car
-from .serializers import CarSerializer, UserSerializer
+from .models import Car, Make, Model
+from .serializers import CarSerializer, UserSerializer, MakeSerializer, ModelSerializer
 from django.contrib.auth.models import User
 from rest_framework import generics
 from rest_framework import permissions, authentication
@@ -60,6 +60,7 @@ class MyPagination(PageNumberPagination):
             },
             'count': self.page.paginator.count,
             'pages': self.page.paginator.num_pages,
+            'current_page': self.page.number,
             'cars': data
         })
 
@@ -116,3 +117,13 @@ class UserDetail(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     authentication_classes = (authentication.TokenAuthentication,)
     permission_classes = (permissions.IsAdminUser,)
+
+
+class MakeList(generics.ListAPIView):
+    queryset = Make.objects.all()
+    serializer_class = MakeSerializer
+
+
+class MakeDetail(generics.RetrieveAPIView):
+    queryset = Make.objects.all()
+    serializer_class = MakeSerializer

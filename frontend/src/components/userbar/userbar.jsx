@@ -32,6 +32,7 @@ class ConnectedUserbar extends Component {
         store.dispatch(removeAuth());
         localStorage.removeItem('token');
         localStorage.removeItem('username');
+        store.dispatch(push('/'));
     }
 
     redirect(event) {
@@ -49,7 +50,7 @@ class ConnectedUserbar extends Component {
                     <NavItem location="/list" onClick={this.redirect}>List</NavItem>                    
                 </Nav>
                 <Nav style={{marginRight: 15}} pullRight>
-                    {this.props.token ? <Logged logout={this.logOut} username={this.props.username} /> : <NotLogged />}
+                    {this.props.token ? <Logged logout={this.logOut} username={this.props.username} redirect={this.redirect} /> : <NotLogged />}
                 </Nav>
             </Navbar>
         );
@@ -59,8 +60,8 @@ class ConnectedUserbar extends Component {
 function Logged(props) {
     return (
         <NavDropdown eventKey={3} title={`Hello, ${props.username}`} id="basic-nav-dropdown">
-            <MenuItem eventKey={3.1}>Action</MenuItem>
-            <MenuItem eventKey={3.2}>Another action</MenuItem>
+            <MenuItem eventKey={3.1} location="/create" onClick={props.redirect}>Sell car</MenuItem>
+            <MenuItem eventKey={3.2}>My deals</MenuItem>
             <MenuItem eventKey={3.3}>Something else here</MenuItem>
             <MenuItem divider />
             <MenuItem eventKey={3.4} onClick={props.logout}>Log Out</MenuItem>
